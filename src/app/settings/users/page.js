@@ -37,7 +37,7 @@ export default function UsersPage() {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#18181b' }}>
-      <Sidebar selected="Users" />
+  {/* Sidebar removed: now rendered in layout.js */}
       <Box
         sx={{
           flexGrow: 1,

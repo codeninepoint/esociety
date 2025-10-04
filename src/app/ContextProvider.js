@@ -6,9 +6,11 @@ export const AppContext = createContext();
 
 export default function ContextProvider({ children }) {
   const [context, setContext] = useState({
-    customer: '',
-    subscription: '',
-    profile: '',
+    organization: 'Acme Corp', // Example default
+    project: 'Default', // Example default
+    module: 'Dashboard',
+    subscription: 'Basic',
+    location: '',
   });
 
   return (

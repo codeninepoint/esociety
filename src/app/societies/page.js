@@ -13,6 +13,7 @@ const PAGE_SIZE = 10;
 
 export default function SocietiesListPage() {
   const { context } = useContext(AppContext);
+  console.log('SocietiesListPage context:', context);
   const [societies, setSocieties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
@@ -42,10 +43,8 @@ export default function SocietiesListPage() {
   return (
     <Box sx={{ display: 'flex',flexGrow: 1, minHeight: '100vh', background: '#f8fafc' }}>
       <Grid container sx={{ minHeight: '100vh' }}>
-        <Grid item xs={2}>
-          <Sidebar selected="Societies" />
-        </Grid>
-        <Grid item xs={10} sx={{ p: 4 }}>
+        {/* Sidebar removed: now rendered in layout.js */}
+        <Grid sx={{ width: '83.333%', p: 4 }}>
           <div className="add-society-container">
             <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
               <Link href="/dashboard" style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 500 }}>Dashboard</Link>

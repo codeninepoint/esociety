@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#18181b' }}>
-      <Sidebar selected="Dashboard" />
+  {/* Sidebar removed: now rendered in layout.js */}
       <Box
         sx={{
           flexGrow: 1,

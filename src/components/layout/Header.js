@@ -12,7 +12,7 @@ export default function Header() {
     <nav className="main-app-header">
       <div className="header-left">
         {/* Add logo or app name here if needed */}
-        <span className="app-logo" style={{ fontWeight: 700, fontSize: 18, color: '#2563eb' }}>eSociety</span>
+        <span className="app-logo" style={{ fontWeight: 700, fontSize: 18, color: '#2563eb' }}>Swaym Org</span>
       </div>
       <div className="header-right">
         <span className="header-user-name">{user.name}</span>

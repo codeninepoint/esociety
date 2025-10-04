@@ -108,20 +108,10 @@ export default function AddSocietyPage() {
   return (
     <Box sx={{ flexGrow: 1, minHeight: '100vh', background: '#f8fafc' }}>
       <Grid container sx={{ minHeight: '100vh' }}>
-        <Grid item xs={2}>
-          <Sidebar selected="Societies" />
+        <Grid sx={{ width: '16.666%', minWidth: 180 }}>
+          {/* Sidebar removed: now rendered in layout.js */}
         </Grid>
-        <Grid
-          item
-          xs={10}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            // alignItems: 'center',
-            // justifyContent: 'center',
-            p: 4,
-          }}
-        >
+        <Grid sx={{ width: '83.333%', p: 4, display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ width: '100%', maxWidth: 900 }}>
             <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
               <Link href="/dashboard" style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 500 }}>Dashboard</Link>
@@ -143,6 +133,7 @@ export default function AddSocietyPage() {
                       <div className="add-society-field" key={key}>
                         <label
                           className="add-society-label"
+                          htmlFor={key}
                           title={key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
                         >
                           {key
@@ -151,6 +142,7 @@ export default function AddSocietyPage() {
                         </label>
                         <input
                           type="text"
+                          id={key}
                           name={key}
                           value={form[key]}
                           onChange={handleChange}
