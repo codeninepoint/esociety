@@ -2,7 +2,7 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { AppContext } from '@/app/ContextProvider';
+import { ModuleContext } from '../ModuleProvider.js';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
@@ -76,7 +76,8 @@ function suggestSocietyCode(name) {
 }
 
 export default function AddSocietyPage() {
-  const { context } = useContext(AppContext);
+  const { moduleContext } = useContext(ModuleContext);
+  console.log('AddSocietyPage ModuleContext:', moduleContext);
   const [form, setForm] = useState(initialState);
   const [submitted, setSubmitted] = useState(false);
 
@@ -100,18 +101,16 @@ export default function AddSocietyPage() {
     await fetch('/api/societies/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, ...context }),
+      body: JSON.stringify({ ...form, ...moduleContext }),
     });
     setSubmitted(true);
   };
 
   return (
-    <Box sx={{ flexGrow: 1, minHeight: '100vh', background: '#f8fafc' }}>
+    <Box sx={{ display: 'flex', flexGrow: 1, minHeight: '100vh', background: '#f8fafc' }}>
       <Grid container sx={{ minHeight: '100vh' }}>
-        <Grid sx={{ width: '16.666%', minWidth: 180 }}>
-          {/* Sidebar removed: now rendered in layout.js */}
-        </Grid>
         <Grid sx={{ width: '83.333%', p: 4, display: 'flex', flexDirection: 'column' }}>
+          <div className="add-society-container">
           <Box sx={{ width: '100%', maxWidth: 900 }}>
             <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
               <Link href="/dashboard" style={{ color: '#1976d2', textDecoration: 'none', fontWeight: 500 }}>Dashboard</Link>
@@ -163,6 +162,7 @@ export default function AddSocietyPage() {
               </button>
             </form>
           </Box>
+          </div>
         </Grid>
       </Grid>
     </Box>
