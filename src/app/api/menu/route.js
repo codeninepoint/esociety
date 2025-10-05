@@ -5,7 +5,7 @@ export async function GET(request) {
   // Example menu data for different modules
   const menuConfig = {
     Societies: [
-      { label: 'Dashboard', href: '/dashboard' },
+      { label: 'Dashboard', href: '/societies/dashboard' },
       {
         label: 'Societies',
         href: '/societies',

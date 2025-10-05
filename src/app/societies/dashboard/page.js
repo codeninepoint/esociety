@@ -1,6 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { ModuleContext } from '../ModuleProvider';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import ListItemButton from '@mui/material/ListItemButton';
 import Sidebar from '@/components/layout/Sidebar';
@@ -27,18 +32,25 @@ const iconMap = {
 
 export default function DashboardPage() {
   const [data, setData] = useState(null);
+  const {moduleContext, setModuleContext} = useContext(ModuleContext);
+  const [societies, setSocieties] = useState([]);
+  const [selectedSociety, setSelectedSociety] = useState(moduleContext.society_code || '');
+  // Debug log for ModuleContext
+  console.log('DashboardPage ModuleContext:', moduleContext);
 
   useEffect(() => {
-    fetch('/api/dashboard')
+    fetch('/api/societies/dashboard')
       .then(res => res.json())
       .then(setData);
+    fetch('/api/societies/list?page=1&limit=100')
+      .then(res => res.json())
+      .then((result) => setSocieties(result.societies || []));
   }, []);
 
   if (!data) return <div>Loading...</div>;
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#18181b' }}>
-  {/* Sidebar removed: now rendered in layout.js */}
       <Box
         sx={{
           flexGrow: 1,
@@ -50,7 +62,28 @@ export default function DashboardPage() {
         }}
       >
         <Box sx={{ maxWidth: 1400, mx: 'auto' }}>
-          <Typography variant="h5" fontWeight="bold" mb={3}>Main Overview</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
+            <Typography variant="h5" fontWeight="bold">Society Overview</Typography>
+            <FormControl sx={{ minWidth: 240 }}>
+              <InputLabel id="select-society-label">Set Society Context</InputLabel>
+              <Select
+                labelId="select-society-label"
+                id="select-society"
+                value={selectedSociety}
+                label="Set Society Context"
+                onChange={(e) => {
+                  setSelectedSociety(e.target.value);
+                  const selected = societies.find(s => s.society_code === e.target.value);
+                  setModuleContext({ ...moduleContext, society_code: selected ? selected.society_code : '', society_name: selected ? selected.society_name : '' });
+                }}
+              >
+                <MenuItem value=""><em>None</em></MenuItem>
+                {societies.map((society) => (
+                  <MenuItem key={society.society_code} value={society.society_code}>{society.society_name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
           <Stack direction="row" spacing={2} mb={3}>
             {data.overviewData.map((item) => (
               <Paper key={item.label} sx={{ p: 2, flex: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -65,9 +98,11 @@ export default function DashboardPage() {
 
           <Typography variant="h6" fontWeight="medium" mb={2}>Quick Actions</Typography>
           <Stack direction="row" spacing={2} mb={3}>
-            {data.quickActions.map((action) => (
-              <Button key={action} variant="contained" color="primary">{action}</Button>
-            ))}
+            {data.quickActions
+              .filter(action => !selectedSociety || action === 'Add' || action === 'Modify' || action === 'Delete')
+              .map((action) => (
+                <Button key={action} variant="contained" color="primary">{action}</Button>
+              ))}
           </Stack>
 
           <Typography variant="h6" fontWeight="medium" mb={2}>Recent Activity</Typography>
