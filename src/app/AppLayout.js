@@ -9,15 +9,19 @@ import ContextProvider from './ContextProvider';
 export default function AppLayout({ children }) {
   return (
     <ContextProvider>
-      <Header />
-      <ContextHeader />
-      <div className="main-app-flex" style={{ display: 'flex', minHeight: '100vh' }}>
-        <Sidebar />
-        <main className="main-app-content" style={{ flex: 1 }}>
-          {children}
-        </main>
+      <div className="app-wrapper">
+        <Header />
+        <ContextHeader />
+        <div className="main-app-flex">
+          <Sidebar />
+          <main className="main-app-content">
+            <div className="main-app-content-inner">
+              {children}
+            </div>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </ContextProvider>
   );
 }

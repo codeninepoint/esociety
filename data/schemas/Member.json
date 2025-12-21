@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/codeninepoint/esociety/create_society/data/schemas/Member.json",
+  "title": "Member",
+  "description": "Schema for member details associated with member-type accounts",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["member_id", "name", "flat_no"],
+  "properties": {
+    "name": { "type": "string", "description": "Member full name" },
+    "flat_shop": { "type": "string", "enum": ["F", "S"], "description": "Flat or Shop indicator" },
+    "flat_no": { "type": "string", "description": "Flat or unit number" },
+    "sq_ft_area": { "type": "number", "description": "Area in square feet", "default": 0 },
+    "email": { "type": "string", "format": "email", "description": "Contact email" },
+    "phone": { "type": "string", "description": "Phone or mobile number" },
+    "member_number": { "type": "string", "description": "Member ledger number or membership id" },
+    "joined_date": { "type": "string", "format": "date", "description": "Membership start date (YYYY-MM-DD)" },
+    "active": { "type": "boolean", "description": "Is member active?", "default": true }
+  },
+  "examples": [
+    {
+      "member_id": "mem-001",
+      "name": "John Doe",
+      "flat_shop": "F",
+      "flat_no": "A-101",
+      "email": "john.doe@example.com",
+      "phone": "+91-9876543210",
+      "member_number": "M-1001",
+      "joined_date": "2020-04-01",
+      "active": true
+    }
+  ]
+}

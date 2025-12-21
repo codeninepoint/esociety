@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/codeninepoint/esociety/create_society/data/schemas/BillIncome.json",
+  "title": "BillIncome",
+  "description": "Schema for a bill income item entry (flags Y/N or boolean accepted)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["bill_item"],
+  "properties": {
+    "bill_item": { "type": ["string", "boolean"], "description": "Is this a bill item? (Y/N or boolean). Use boolean true/false or 'Y'/'N' string." },
+    "item_narration": { "type": "string", "description": "Short narration for the item" },
+    "order_number": { "type": "integer", "description": "Order number for display/sorting" },
+    "charge_interest": { "type": ["string", "boolean"], "description": "Charge interest? 'Y'/'N' or boolean" , "enum": ["Y", "N"]},
+    "gst_limit_calc": { "type": ["string", "boolean"], "description": "GST limit calculation flag" },
+    "include_in_gst_bill": { "type": ["string", "boolean"], "description": "Include in GST bill?" },
+    "rebate": { "type": ["string", "boolean"], "description": "Rebate flag (Y/N) or boolean", "enum": ["Y", "N"] },
+    "compulsorily_apply_gst": { "type": ["string", "boolean"], "description": "Compulsorily apply GST?" }
+  },
+  "examples": [
+    {
+      "bill_item": "Y",
+      "item_narration": "Income Information",
+      "order_number": 10,
+      "charge_interest": "Y",
+      "gst_limit_calc": "N",
+      "include_in_gst_bill": "N",
+      "rebate": "N",
+      "compulsorily_apply_gst": "N"
+    }
+  ]
+}

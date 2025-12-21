@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CreateSociety",
+  "description": "Schema for the Society create/edit form (fields shown on the attached form image).\nThe `messages` field is a single multiline string (up to 10 lines).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["society_code", "name"],
+  "properties": {
+    "id": {
+        "type": "string",
+        "description": "Unique identifier for the society record.",
+        "examples": ["society-uuid-1234"]
+    },
+    "society_code": {
+      "type": "string",
+      "description": "Short uppercase society code identifier.",
+      "pattern": "^[A-Z0-9_-]{1,20}$",
+      "maxLength": 20,
+      "examples": ["SOCI001", "ABC"]
+    },
+    "name": {
+      "type": "string",
+      "description": "Full society name.",
+      "maxLength": 200,
+      "examples": ["ABC CO.OP.HSG SOC. LTD", "Green Valley Society"]
+    },
+    "organization_id": {
+        "type": ["string", "null"],
+        "description": "Identifier for the parent organization (if applicable).",
+        "examples": ["org-uuid-7890"],
+        "default": null
+    },
+    "reg_no": {
+      "type": ["string", "null"],
+      "description": "Registration number (optional).",
+      "maxLength": 50,
+      "examples": ["REG-0001", "GVS-2019-07"],
+      "default": null
+    },
+    "address1": { "type": ["string", "null"], "maxLength": 200 },
+    "address2": { "type": ["string", "null"], "maxLength": 200 },
+
+    "interest_charged": {
+      "type": "number",
+      "description": "Interest charged percent. Numeric or Floating point value between 0 and 100.",
+      "minimum": 0,
+      "maximum": 100,
+      "examples": 6.50,
+      "default": 12.0
+    },
+    "billing_period": { 
+        "type": "integer", 
+        "enum": [1, 3, 6],
+        "description": "Billing period in months. 1=Monthly, 3=Quarterly, 6=Half-Yearly.",
+        "default": 1
+    },
+     "interest_method": {
+      "type": "string",
+      "enum": ["S", "C"],
+      "description": "Interest calculation method. Simple or Compound.",
+      "default": "S"
+    },
+    "due_days": { "type": "integer", "minimum": 0 },
+
+    "interest_from": { "type": "string", "enum": ["BD", "DD"], "description": "Indicator whether interest counts from Bill Date or Due Date.", "default": "DD" },
+    "acct_period_from": {
+      "type": ["string", "null"],
+      "description": "Accounting period start date (DD-MM-YYYY).",
+      "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+      "examples": ["01-04-2025"]
+    },
+    "acct_period_to": {
+      "type": ["string", "null"],
+      "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+      "examples": ["31-03-2026"]
+    },
+    "auth_sign": { "type": ["string", "null"], "maxLength": 120 },
+
+    "total_members": { 
+        "type": "integer",
+        "minimum": 0,
+        "examples": [120, 20]
+    },
+    "charge_late": {
+      "type": "string",
+      "description": "Charge for late payment. a marker (e.g. 'N').",
+      "enum": ["Y", "N"],
+      "examples": "N"
+    },
+
+    "from_bill_due": {
+      "type": "string",
+      "enum": ["B", "D"],
+      "description": "Indicator whether interest counts from bill date or due date.",
+      "default":"D"
+    },
+    "rebate_mode": { "type": "string", "enum": ["P", "A"], "description": "Rebate mode: Percent or Amount.", "default": "P" },
+    "rebate_days": { "type": ["integer", "string"], "minimum": 0 },
+    "rebate_amt_pct": { "type": ["number", "string"], "minimum": 0 },
+    "adjust_first": { "type": "string", "enum": ["IP", "PI"] , "description": "Adjustment order: Interest first or Principal first.", "default": "IP" },
+
+    "acct_year": {
+      "type": "string",
+      "description": "Accounting year (e.g. 2025-2026).",
+      "pattern": "^\\d{4}(?:-\\d{4})?$",
+      "examples": ["2025-2026"]
+    },
+    "messages": {
+      "type": "string",
+      "description": "Messages to print on bills. Single multiline text block. Up to 10 lines.",
+      "maxLength": 2000,
+      "pattern": "^(?:.*(?:\\r?\\n|$)){0,10}$",
+      "examples": ["1)21% INTEREST WILL BE CHARGED AFTER DUE DATE.", "Line1\nLine2\nLine3"]
+    },
+    "created_on": {
+        "type": "string",
+        "description": "Timestamp when the society record was created.",
+        "format": "date-time",
+        "examples": ["2024-06-15T10:20:30Z"]
+    },
+    "updated_on": {
+        "type": "string",
+        "description": "Timestamp when the society record was last updated.",
+        "format": "date-time",
+        "examples": ["2024-06-20T15:45:00Z"]
+    },
+    "created_by": {
+        "type": "string",
+        "description": "Identifier of the user who created the society record.",
+        "examples": ["user-uuid-5678"]
+    },
+    "updated_by": {
+        "type": "string",
+        "description": "Identifier of the user who last updated the society record.",
+        "examples": ["user-uuid-9012"]  
+    }
+  }
+}

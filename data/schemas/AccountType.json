@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/codeninepoint/esociety/create_society/data/schemas/AccountType.json",
+  "title": "AccountType",
+  "description": "Allowed account classification types",
+  "type": "string",
+  "enum": [
+    "Banks",
+    "Cash Books",
+    "Expenses",
+    "Bill Income",
+    "Current Liabilities",
+    "Reserve Funds & Other Funds",
+    "Fixed Assets",
+    "Investments",
+    "Members",
+    "Interest",
+    "Advances",
+    "Income & Expenditure A/c.",
+    "Share Capital",
+    "Member's Contribution",
+    "Other Income"
+  ]
+}

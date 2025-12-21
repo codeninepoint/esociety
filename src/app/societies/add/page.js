@@ -2,7 +2,9 @@
 'use client';
 
 import { useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ModuleContext } from '../ModuleProvider.js';
+import { AppContext } from '@/app/ContextProvider';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
@@ -76,10 +78,12 @@ function suggestSocietyCode(name) {
 }
 
 export default function AddSocietyPage() {
-  const { moduleContext } = useContext(ModuleContext);
+  const router = useRouter();
+  const { moduleContext, setModuleContext } = useContext(ModuleContext);
+  const { context } = useContext(AppContext);
   console.log('AddSocietyPage ModuleContext:', moduleContext);
   const [form, setForm] = useState(initialState);
-  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   // Suggest code as user types society_name, but allow editing society_code
   const handleChange = (e) => {
@@ -97,13 +101,81 @@ export default function AddSocietyPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Send context along with form data
-    await fetch('/api/societies/add', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, ...moduleContext }),
-    });
-    setSubmitted(true);
+    setError(null); // Clear any previous errors
+    
+    try {
+      // Send context along with form data
+      const payload = { ...form };
+      // Add organization_id from context if available
+      if (context?.organizationId) {
+        payload.organization_id = context.organizationId;
+        payload.organizationId = context.organizationId;
+      }
+      
+      console.log('Creating society with payload:', payload);
+      
+      const response = await fetch('/api/societies/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      console.log('Response status:', response.status, response.ok);
+
+      if (response.ok) {
+        let createdSociety = null;
+        try {
+          createdSociety = await response.json();
+          console.log('Created society response:', createdSociety);
+        } catch (parseError) {
+          console.warn('Failed to parse response as JSON, using form data:', parseError);
+          // If parsing fails, use form data
+          createdSociety = { society_code: form.society_code, name: form.society_name };
+        }
+        
+        // Extract society code and name from the response or form
+        const societyCode = createdSociety?.society_code || createdSociety?.code || form.society_code;
+        const societyName = createdSociety?.name || createdSociety?.society_name || form.society_name;
+        
+        console.log('Created society - Code:', societyCode, 'Name:', societyName);
+        
+        // Update module context with the newly created society
+        if (setModuleContext && societyCode) {
+          setModuleContext({ 
+            ...moduleContext, 
+            society_code: societyCode, 
+            society_name: societyName 
+          });
+          console.log('Updated module context');
+        }
+        
+        // Navigate to the society list page (use replace so user can't go back to add page)
+        console.log('Navigating to /societies/society');
+        try {
+          router.replace('/societies/society');
+        } catch (navError) {
+          console.error('Navigation error, using window.location:', navError);
+          // Fallback to window.location if router.replace fails
+          window.location.replace('/societies/society');
+        }
+      } else {
+        // Handle error case
+        let errorData = { error: 'Failed to create society' };
+        try {
+          const text = await response.text();
+          if (text) {
+            errorData = JSON.parse(text);
+          }
+        } catch (parseError) {
+          console.warn('Failed to parse error response, using default error message');
+        }
+        console.error('Failed to create society - Status:', response.status, 'Error:', errorData);
+        setError(errorData?.error || `Failed to create society (Status: ${response.status}). Please try again.`);
+      }
+    } catch (error) {
+      console.error('Error creating society:', error);
+      setError('An error occurred while creating the society. Please try again.');
+    }
   };
 
   return (
@@ -118,9 +190,9 @@ export default function AddSocietyPage() {
               <Typography color="text.primary" fontWeight={500}>Add Society</Typography>
             </Breadcrumbs>
             <h2 className="add-society-title" style={{ textAlign: 'center' }}>Add Society</h2>
-            {submitted ? (
-              <div className="add-society-success" style={{ textAlign: 'center' }}>
-                Society added (stubbed)!
+            {error ? (
+              <div className="add-society-error" style={{ textAlign: 'center', color: '#d32f2f', padding: '1rem', backgroundColor: '#ffebee', borderRadius: '4px', marginBottom: '1rem' }}>
+                {error}
               </div>
             ) : null}
             <form onSubmit={handleSubmit}>
