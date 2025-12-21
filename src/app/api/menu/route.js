@@ -1,18 +1,29 @@
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const module = searchParams.get('module');
+  const moduleName = searchParams.get('module');
 
   // Example menu data for different modules
   const menuConfig = {
     Societies: [
       { label: 'Dashboard', href: '/societies/dashboard' },
+      { label: 'Master Files', href: '/societies/main',
+        children: [
+          { label: 'Society', href: '/societies/society' },
+          { label: 'Accounts / Vendor', href: '/societies/accounts' }
+        ]
+      },
+      { label: 'Society', href: '/societies/society' },
       {
         label: 'Societies',
         href: '/societies',
         children: [
-          { label: 'Add Society', href: '/societies/add' }
+          { label: 'Society', href: '/societies/add' },
+          { label: 'Societies', href: '/societies/society' },
+          { label: 'Accounts / Vendor', href: '/societies/accounts' }
+          
         ]
       },
+      { label: 'Accounts / Vendor', href: '/societies/accounts' },
       { label: 'Reports', href: '/societies/reports' },
     ],
     Accounts: [
@@ -24,7 +35,7 @@ export async function GET(request) {
     // Add more modules as needed
   };
 
-  const items = menuConfig[module] || [
+  const items = menuConfig[moduleName] || [
     { label: 'Dashboard', href: '/dashboard' },
   ];
 

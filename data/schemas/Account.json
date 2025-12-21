@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/codeninepoint/esociety/create_society/data/schemas/Account.json",
+  "title": "Account",
+  "description": "JSON Schema for an account entry used by the accounts form",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["acct_code", "name"],
+  "properties": {
+    "id": {
+        "type": "string",
+        "description": "Unique identifier for the society record.",
+        "examples": ["society-uuid-1234"]
+    },
+    "acct_code": {
+      "type": "string",
+      "description": "Unique account code (upper-case preferred)",
+      "minLength": 1,
+      "examples": ["A-001", "A-002"]
+    },
+    "name": {
+      "type": "string",
+      "description": "Account name",
+      "minLength": 1,
+      "examples": ["Cash Book", "John Doe"]
+    },
+    "title": {
+      "type": "string",
+      "description": "Account title or short description",
+      "maxLength": 10,
+      "examples": ["Mr.", "Mrs."]
+    },
+    "society_id": {
+        "type": ["string", "null"],
+        "description": "Identifier for the parent society (if applicable).",
+        "examples": ["soc-uuid-7890"],
+        "default": null
+    },
+    "open_bal": {
+      "type": "number",
+      "description": "Opening balance for the account (numeric)",
+      "default": 0,
+      "examples": [1000.50, -250.00]
+    },
+    "debit_credit": {
+      "type": "string",
+      "description": "Whether the opening balance is Debit or Credit",
+      "enum": ["D", "C"]
+    },
+    "prin_bill": { "type": "number", "description": "Principal bill amount", "default": 0.00 },
+    "interest_amt": { "type": "number", "description": "Interest amount", "default": 0.00 },
+    "prev_years_bal": { "type": "number", "description": "Previous years balance", "default": 0.00 },
+    "sinking_fund": { "type": "number", "description": "Sinking fund amount", "default": 0.00 },
+
+
+    "account_type": { "$ref": "https://raw.githubusercontent.com/codeninepoint/esociety/create_society/data/schemas/AccountType.json" },
+  "member": { "$ref": "https://raw.githubusercontent.com/codeninepoint/esociety/create_society/data/schemas/Member.json" },
+  "bill_income": { "$ref": "https://raw.githubusercontent.com/codeninepoint/esociety/create_society/data/schemas/BillIncome.json" },
+  "member_flag": { "type": "string", "enum": ["Y", "N"], "description": "Is this a member account?" },
+    
+    
+    
+    "other_info": { "type": "string", "description": "Any other additional info" },
+    "classify": {
+      "type": "string",
+      "description": "Classification of the account",
+      "enum": ["I","B"],
+      "default": "I"
+    }
+  },
+  "examples": [
+    {
+      "acct_code": "A-001",
+      "name": "John Doe",
+      "title": "Mr.",
+      "society_id": "soc-uuid-7890",
+      "open_bal": 0.00,
+      "debit_credit": "D",
+      "prin_bill": 0.00,
+      "interest_amt": 0.00,
+      "prev_years_bal": 0.00,
+      "sinking_fund": 0.00,
+      "flat_shop": "F",
+      "flat_no": "A-101",
+      "joint_name": "Jane Doe",
+      "email": "john.doe@example.com",
+      "loan_from": "",
+      "rented_from": "",
+      "member_flag": "Y",
+      "member_bank": "Bank of Examples",
+      "phone": "+91-9876543210",
+      "other_info": "Preferred customer",
+      "classify": "I",
+      "account_type": "Members"
+    }
+  ]
+  ,
+  "allOf": [
+    {
+      "if": { "properties": { "account_type": { "const": "Members" } }, "required": ["account_type"] },
+      "then": { "required": ["member"] }
+    }
+    ,
+    {
+      "if": { "properties": { "account_type": { "const": "Bill Income" } }, "required": ["account_type"] },
+      "then": { "required": ["bill_income"] }
+    }
+  ]
+}

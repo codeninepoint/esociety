@@ -1,0 +1,70 @@
+[
+  {
+    "acct_code": "BANK001",
+    "name": "Bank"
+  },
+  {
+    "acct_code": "EXP100",
+    "name": "Expenses"
+  },
+  {
+    "acct_code": "REV200",
+    "name": "Revenue-Phase-1",
+    "open_bal": "",
+    "debit_credit": "Debit",
+    "prin_bill": "",
+    "interest_amt": "",
+    "prev_years_bal": "",
+    "flat_shop": "",
+    "flat_no": "",
+    "joint_name": "",
+    "email": "",
+    "loan_from": "",
+    "rented_from": "",
+    "member_flag": "Y",
+    "member_bank": "",
+    "phone": "",
+    "other_info": "",
+    "classify": "Banks"
+  },
+  {
+    "acct_code": "MEM001",
+    "name": "Members",
+    "open_bal": "",
+    "debit_credit": "Debit",
+    "prin_bill": "",
+    "interest_amt": "",
+    "prev_years_bal": "",
+    "flat_shop": "",
+    "flat_no": "",
+    "joint_name": "",
+    "email": "",
+    "loan_from": "",
+    "rented_from": "",
+    "member_flag": "Y",
+    "member_bank": "",
+    "phone": "9820132546",
+    "other_info": "",
+    "classify": "Banks"
+  },
+  {
+    "acct_code": "A-101011",
+    "name": "MY FRIEND",
+    "open_bal": "",
+    "debit_credit": "Debit",
+    "prin_bill": "",
+    "interest_amt": "",
+    "prev_years_bal": "",
+    "flat_shop": "",
+    "flat_no": "",
+    "joint_name": "",
+    "email": "",
+    "loan_from": "",
+    "rented_from": "",
+    "member_flag": "Y",
+    "member_bank": "",
+    "phone": "",
+    "other_info": "",
+    "classify": "Banks"
+  }
+]
